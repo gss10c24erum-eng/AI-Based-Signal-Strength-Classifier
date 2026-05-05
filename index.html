@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Signal Strength Dashboard</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+    <div class="container">
+        <h1>📡 Signal Strength Monitor</h1>
+
+        <div class="card">
+            <h2>Signal Value</h2>
+            <p id="value">--</p>
+        </div>
+
+        <div class="card">
+            <h2>Signal Strength</h2>
+            <p id="strength">--</p>
+        </div>
+    </div>
+
+<script>
+function fetchData() {
+    fetch('/data')
+    .then(response => response.json())
+    .then(data => {
+        document.getElementById("value").innerText = data.value;
+        document.getElementById("strength").innerText = data.strength;
+
+        // Color logic
+        let strength = data.strength;
+        let color = "white";
+
+        if (strength === "Weak") color = "red";
+        else if (strength === "Medium") color = "orange";
+        else if (strength === "Strong") color = "green";
+
+        document.getElementById("strength").style.color = color;
+    });
+}
+
+// Update every 1 second
+setInterval(fetchData, 1000);
+</script>
+
+</body>
+</html>
